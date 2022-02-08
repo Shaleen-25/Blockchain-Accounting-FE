@@ -1,0 +1,58 @@
+.landing {
+  background-image: linear-gradient(
+    to right,
+    rgb(3, 16, 59) 30%,
+    rgb(25, 81, 184) 100%
+  );
+  color: white;
+  font-family: Lucida Sans Unicode, Lucida Grande;
+  background-color: rgb(3, 16, 59);
+  height: 100vh;
+}
+
+#bgimg {
+  opacity: 0.8;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 600px;
+}
+
+.box {
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 10%;
+  background-image: linear-gradient(
+    to right,
+    rgb(29, 124, 203) 30%,
+    rgb(25, 81, 184) 100%
+  );
+  box-shadow: rgb(22 53 76 / 70%) 0px 16px 57px 0px;
+
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  color: lightgrey;
+}
+
+#heading {
+  line-height: 10px;
+  margin-top: 0px;
+  padding-top: 70px;
+  font-size: 35px;
+  letter-spacing: 2px;
+  text-shadow: black;
+}
+
+#subHeading {
+  font-size: 30px;
+  letter-spacing: 2.5px;
+}
+
+#footer {
+  font-size: 12px;
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  transform: translateX(-50%);
+}

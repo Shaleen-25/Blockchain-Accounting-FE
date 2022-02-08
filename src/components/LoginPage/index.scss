@@ -1,0 +1,28 @@
+.submit {
+  color: white !important;
+  background-color: #1951b8 !important;
+}
+
+.formContainer {
+  padding: 20px;
+  position: absolute;
+  border-radius: 10%;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  height: fit-content;
+  background-color: rgb(204, 228, 240);
+}
+
+#box {
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#node {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: -15px;
+}
