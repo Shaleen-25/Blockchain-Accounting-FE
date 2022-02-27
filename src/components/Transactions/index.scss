@@ -1,0 +1,69 @@
+.transactions {
+  display: flex;
+  box-sizing: border-box;
+  padding: 20px;
+  height: inherit;
+}
+
+.left {
+  width: 50%;
+  height: 45vh;
+  border-right: 1px solid black;
+  overflow: scroll;
+}
+
+.right {
+  height: 45vh;
+  padding-left: 20px;
+  width: 50%;
+  overflow: scroll;
+}
+
+.react-dropdown-select {
+  background-color: white;
+}
+
+.react-dropdown-select-dropdown {
+  margin-top: -10px;
+  max-height: 150px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.dropdown {
+  width: 43%;
+  margin-right: 10px;
+}
+
+.defaultInput {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  border: 1px solid #ccc;
+  width: 100%;
+  border-radius: 2px;
+  padding: 2px 5px;
+  flex-direction: row;
+  direction: ltr;
+  align-items: center;
+  min-height: 36px;
+  pointer-events: all;
+}
+
+.defaultInput:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgb(0 116 217 / 20%);
+}
+
+.defaultInput:focus-within {
+  border-color: #0074d9;
+}
+
+.add {
+  margin: 40px 0 0 10px;
+}
+
+#checkbox {
+  padding-top: 10px;
+  padding-left: 0px;
+}

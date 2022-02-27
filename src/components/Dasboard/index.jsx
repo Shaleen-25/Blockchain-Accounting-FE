@@ -6,18 +6,16 @@ import TabsListUnstyled from "@mui/base/TabsListUnstyled";
 import TabPanelUnstyled from "@mui/base/TabPanelUnstyled";
 import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
+import Transactions from "../Transactions";
+import Approvals from "../Approvals";
 
 const blue = {
   50: "#F0F7FF",
-  100: "#C2E0FF",
   200: "#80BFFF",
   300: "#66B2FF",
   400: "#3399FF",
   500: "#007FFF",
   600: "#0072E5",
-  700: "#0059B2",
-  800: "#004C99",
-  900: "#003A75",
 };
 
 const Tab = styled(TabUnstyled)`
@@ -79,24 +77,25 @@ const Dasboard = () => {
       <TabsUnstyled defaultValue={0}>
         <TabsList>
           <Tab>Transactions</Tab>
-          <Tab>Report</Tab>
-          <Tab>Local Ledger</Tab>
-          <Tab>World Ledger</Tab>
+          <Tab>Approvals</Tab>
+          <Tab>Reports</Tab>
+          <Tab>Ledgers</Tab>
         </TabsList>
         <TabPanel value={0}>
-          <div className="mainBody">Transactions</div>
+          <div className="mainBody">
+            <Transactions />
+          </div>
         </TabPanel>
         <TabPanel value={1}>
-          {" "}
-          <div className="mainBody">Report</div>
+          <div className="mainBody">
+            <Approvals />
+          </div>
         </TabPanel>
         <TabPanel value={2}>
-          {" "}
-          <div className="mainBody">Local Ledger</div>
+          <div className="mainBody">Reports</div>
         </TabPanel>
         <TabPanel value={3}>
-          {" "}
-          <div className="mainBody">World Ledger</div>
+          <div className="mainBody">Ledgers</div>
         </TabPanel>
       </TabsUnstyled>
     </div>

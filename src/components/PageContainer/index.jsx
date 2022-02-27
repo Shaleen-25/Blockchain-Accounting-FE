@@ -10,6 +10,7 @@ const LoggedOutWrapper = ({ children }) => {
       </h2>
       <p id="subHeading">Secure |&nbsp; Fast |&nbsp; Reliable</p>
       <img
+        alt="bgimg"
         id="bgimg"
         src="https://react-next-landing.redq.io/_next/static/images/banner-bg-7cd39473df03c970027bf99aed3e7a3b.png"
       />
