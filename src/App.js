@@ -3,8 +3,9 @@ import LandingPage from "./components/LandingPage";
 import LoginPage from "./components/LoginPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Dasboard from "./components/Dasboard";
-import "./App.css";
 import PageContainer from "./components/PageContainer";
+import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const Redirect = () => {
   window.location.pathname = "/";
