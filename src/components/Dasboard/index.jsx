@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 import { styled } from "@mui/system";
 import TabsUnstyled from "@mui/base/TabsUnstyled";
@@ -8,6 +8,11 @@ import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
 import Transactions from "../Transactions";
 import Approvals from "../Approvals";
+import { useJsonToCsv } from "react-json-csv";
+import useStore from "../../global-state";
+import { Button } from "@material-ui/core";
+import ManageAccounts from "../ManageAccounts";
+import Ledger from "../Ledger";
 
 const blue = {
   50: "#F0F7FF",
@@ -71,34 +76,95 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
-const Dasboard = () => {
+const filename = "Ledger Report",
+  fields = {
+    index: "Transaction ID",
+    amount: "Amount",
+  },
+  style = {
+    padding: "15px",
+  },
+  data = [
+    { index: 123, amount: "10897" },
+    { index: 456, amount: "3562" },
+  ],
+  text = "Convert Json to Csv";
+
+const Logut = () => {
+  const setUser = useStore((state) => state.setLoggedInUser);
   return (
-    <div className="dashboard">
-      <TabsUnstyled defaultValue={0}>
-        <TabsList>
-          <Tab>Transactions</Tab>
-          <Tab>Approvals</Tab>
-          <Tab>Reports</Tab>
-          <Tab>Ledgers</Tab>
-        </TabsList>
-        <TabPanel value={0}>
-          <div className="mainBody">
-            <Transactions />
-          </div>
-        </TabPanel>
-        <TabPanel value={1}>
-          <div className="mainBody">
-            <Approvals />
-          </div>
-        </TabPanel>
-        <TabPanel value={2}>
-          <div className="mainBody">Reports</div>
-        </TabPanel>
-        <TabPanel value={3}>
-          <div className="mainBody">Ledgers</div>
-        </TabPanel>
-      </TabsUnstyled>
-    </div>
+    <Button
+      variant="contained"
+      id="logout"
+      onClick={() => {
+        setUser("");
+        localStorage.removeItem("loggedInUser");
+        window.location.pathname = "/";
+      }}
+    >
+      LOG OUT
+    </Button>
+  );
+};
+
+const Dasboard = () => {
+  const user = useStore((state) => state.loggedInUser);
+  if (!user) window.location.pathname = "/login";
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("https://mlsubba.herokuapp.com/api/user/all");
+      const users = await res.json();
+      setUsers(users);
+    })();
+  }, []);
+
+  const { saveAsCsv } = useJsonToCsv();
+  return (
+    <>
+      <Logut />
+      <div className="dashboard">
+        <TabsUnstyled defaultValue={0}>
+          <TabsList>
+            <Tab>Transactions</Tab>
+            <Tab>Manage Accounts</Tab>
+            <Tab>Approvals</Tab>
+            <Tab>Reports</Tab>
+            <Tab>Ledgers</Tab>
+          </TabsList>
+          <TabPanel value={0}>
+            <div className="sectionBody">
+              <Transactions users={users} />
+            </div>
+          </TabPanel>
+          <TabPanel value={1}>
+            <div className="sectionBody">
+              <ManageAccounts users={users} />
+            </div>
+          </TabPanel>
+          <TabPanel value={2}>
+            <div className="sectionBody">
+              <Approvals />
+            </div>
+          </TabPanel>
+          <TabPanel value={3}>
+            <div className="sectionBody">
+              <h3>Reports</h3>
+              <button
+                onClick={() => saveAsCsv({ data, style, fields, filename })}
+              >
+                Download Report
+              </button>
+            </div>
+          </TabPanel>
+          <TabPanel value={4}>
+            <div className="sectionBody">
+              <Ledger />
+            </div>
+          </TabPanel>
+        </TabsUnstyled>
+      </div>
+    </>
   );
 };
 

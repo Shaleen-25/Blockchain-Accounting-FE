@@ -2,11 +2,12 @@ import AddCircle from "@mui/icons-material/AddCircle";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { Button, Checkbox, Grid } from "@mui/material";
 import cloneDeep from "lodash.clonedeep";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-dropdown-select";
 import { toast } from "react-toastify";
 import { toastSettings } from "../../constants";
+import useStore from "../../global-state";
 import "./index.scss";
 
 const options = [
@@ -16,8 +17,14 @@ const options = [
   { label: "Sales", value: "Sales" },
 ];
 
-const Info = ({ index, addorDelete, accs, handleUpdate, side }) => {
-  console.log("Accs[i]", accs, side);
+const Info = ({
+  index,
+  addorDelete,
+  accs,
+  handleUpdate,
+  side,
+  allAccountsDB,
+}) => {
   const last = index === accs.length - 1;
   return (
     <div
@@ -31,7 +38,7 @@ const Info = ({ index, addorDelete, accs, handleUpdate, side }) => {
         <Select
           key={index}
           values={[{ label: accs[index].id, value: accs[index].id }]}
-          options={options}
+          options={allAccountsDB}
           onChange={(values) => {
             handleUpdate("account", index, values[0].label, side);
           }}
@@ -66,16 +73,50 @@ const Info = ({ index, addorDelete, accs, handleUpdate, side }) => {
   );
 };
 
-const Transactions = () => {
+const Transactions = ({ users }) => {
+  const [allAccountsDB, setAllAccountsDB] = useState([]);
   const [accs, setAccs] = useState([{}]);
   const [accsr, setAccsr] = useState([{}]);
   const [msg, setMsg] = useState("");
   const [isCredit, setIsCredit] = useState(false);
+  const user = useStore((state) => state.loggedInUser);
 
-  console.log("Latest Accs Left", accs);
-  console.log("Latest Accs Right", accsr);
-  // console.log("isCredit", isCredit);
-  // console.log("msg", msg);
+  console.log({ accs, accsr, allAccountsDB });
+
+  const leftAccountIDs = allAccountsDB
+    .filter(({ label }) => accs.map(({ id }) => id).includes(label))
+    .map(({ id }) => id);
+  const rightAccountIDs = allAccountsDB
+    .filter(({ label }) => accsr.map(({ id }) => id).includes(label))
+    .map(({ id }) => id);
+
+  const leftAccountAmts = accs.map(({ amt }) => amt);
+  const rightAccountAmts = accsr.map(({ amt }) => amt);
+
+  console.log({
+    leftAccountIDs,
+    rightAccountIDs,
+    leftAccountAmts,
+    rightAccountAmts,
+  });
+
+  useEffect(() => {
+    const getAccountsData = async () => {
+      const data = await fetch(
+        "https://mlsubba.herokuapp.com/api/account/all"
+      ).catch((err) => {
+        console.log("err", err);
+      });
+      const res = await data.json();
+      const accOptions = res.map((acc) => ({
+        label: acc.name,
+        value: acc.name,
+        id: acc.id,
+      }));
+      setAllAccountsDB(accOptions);
+    };
+    getAccountsData();
+  }, []);
 
   const handleAddorDelete = (i, add, side) => {
     const setter = side === "left" ? setAccs : setAccsr;
@@ -112,48 +153,12 @@ const Transactions = () => {
     }
   };
 
-  // const handleUpdater = (type, i, val) => {
-  //   if (type == "account") {
-  //     setAccsr((prev) => {
-  //       const tempArr = cloneDeep(prev);
-  //       tempArr[i].id = val;
-
-  //       return tempArr;
-  //     });
-  //   } else {
-  //     setAccsr((prev) => {
-  //       const tempArr = cloneDeep(prev);
-  //       tempArr[i].amt = val;
-  //       return tempArr;
-  //     });
-  //   }
-  // };
-
-  // const handleAddorDeleter = (i, add) => {
-  //   if (add) {
-  //     setAccsr((prev) => {
-  //       const tempArr = [...prev];
-  //       tempArr.push({});
-  //       return tempArr;
-  //     });
-  //   } else {
-  //     setAccsr((prev) => {
-  //       const tempArr = [...prev];
-  //       tempArr.splice(i, 1);
-  //       return tempArr;
-  //     });
-  //   }
-  // };
-
   const displayAccounts = (side) => {
     const accounts = side === "left" ? accs : accsr;
-    console.log(
-      "🚀 ~ file: index.jsx ~ line 151 ~ displayAccounts ~ accounts",
-      accounts
-    );
     return accounts.map((_, i) => {
       return (
         <Info
+          allAccountsDB={allAccountsDB}
           last={i === accounts.length - 1}
           key={i}
           index={i}
@@ -166,20 +171,7 @@ const Transactions = () => {
     });
   };
 
-  // const displayaccsr = accsr.map((_, i) => {
-  //   return (
-  //     <Info
-  //       last={i === accsr.length - 1}
-  //       key={i}
-  //       index={i}
-  //       accs={accsr}
-  //       addorDelete={handleAddorDeleter}
-  //       handleUpdate={handleUpdater}
-  //     />
-  //   );
-  // });
-
-  const handleSave = () => {
+  const handleSave = async () => {
     const leftAmt = accs.reduce((acc, curr) => {
       return acc + curr.amt;
     }, 0);
@@ -193,12 +185,28 @@ const Transactions = () => {
     } else if (!msg) {
       toast.error("Transaction message should not be empty", toastSettings);
     } else {
-      toast.success("Transaction successfully submitted", toastSettings);
-      window.location.reload();
-      // setAccs([{}]);
-      // setAccsr([{}]);
-      // setMsg("");
-      // setIsCredit(false);
+      try {
+        await fetch("https://mlsubba.herokuapp.com/api/transaction/add'", {
+          method: "POST",
+          body: JSON.stringify({
+            accountFrom: leftAccountIDs,
+            amountFrom: leftAccountAmts,
+            accountFromIsCredit: isCredit,
+            accountTo: rightAccountIDs,
+            amountTo: rightAccountAmts,
+            message: "msg",
+            user: users.find(({ firstName }) => firstName === user).id,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+        toast.success("Transaction successfully submitted", toastSettings);
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        console.log("error", err);
+        toast.error(err.message, toastSettings);
+      }
     }
   };
 
@@ -206,10 +214,16 @@ const Transactions = () => {
     <>
       <Grid className="transactions" container spacing={2}>
         <Grid className="left" item xs={6}>
+          FROM
           {displayAccounts("left")}
         </Grid>
         <Grid className="right" item xs={6}>
+          TO
           {displayAccounts("right")}
+        </Grid>
+        <Grid item xs={2} id="checkbox">
+          <Checkbox onChange={() => setIsCredit((prev) => !prev)} />{" "}
+          <span>Credit</span>
         </Grid>
         <Grid item xs={4}>
           <input
@@ -218,10 +232,6 @@ const Transactions = () => {
             placeholder="Enter Transaction Message"
             onChange={(e) => setMsg(e.target.value)}
           />
-        </Grid>
-        <Grid item xs={2} id="checkbox">
-          <Checkbox onChange={() => setIsCredit((prev) => !prev)} />{" "}
-          <span>Credit</span>
         </Grid>
         <Grid item xs={3}>
           <Button
@@ -234,15 +244,6 @@ const Transactions = () => {
           </Button>
         </Grid>
       </Grid>
-      {/* <div className="transactions row">
-        <div className="left col">{displayaccs}</div>
-        <div className="right col">{displayaccsr}</div>
-        <div className="bottom row">
-          <Checkbox>IsCreddit</Checkbox>
-          <h4 style={{ textAlign: "left", lineHeight: 0 }}>Enter Amount</h4>
-          <input className="defaultInput" />
-        </div>
-      </div> */}
     </>
   );
 };

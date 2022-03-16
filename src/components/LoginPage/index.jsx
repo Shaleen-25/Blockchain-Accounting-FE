@@ -6,8 +6,9 @@ import Button from "@material-ui/core/Button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom";
+import { toastSettings } from "../../constants";
 import "./index.scss";
-import "react-toastify/dist/ReactToastify.css";
+import useStore from "../../global-state";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,20 +33,52 @@ const LoginPage = () => {
   const box1Ref = useRef(null);
   const classes = useStyles();
   const [user, setUser] = useState("");
-  const [email, setEmail] = useState("");
+  const [lName, setLname] = useState("");
   const [pwd, setPwd] = useState("");
   const [signUpPage, setSignUpPage] = useState(false);
-
   const [searchParams] = useSearchParams();
+  const setLoggedInUser = useStore((state) => state.setLoggedInUser);
 
-  const toastSettings = {
-    position: toast.POSITION.TOP_RIGHT || 0,
-    autoClose: 2000,
-    hideProgressBar: true,
-    closeOnClick: true,
-    pauseOnHover: false,
-    draggable: false,
-    progress: undefined,
+  const handleLogin = async () => {
+    if (signUpPage) {
+      //post req to add user
+      try {
+        await fetch("https://mlsubba.herokuapp.com/api/user/add", {
+          method: "POST",
+          body: JSON.stringify({
+            firstName: user,
+            lastName: lName,
+            password: pwd,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+      } catch (err) {
+        console.log("error", err);
+      }
+      setSignUpPage(false);
+      toast.success(`Successfully Registered ${user}`, toastSettings);
+    } else {
+      // post req to check user
+      const data = await fetch(
+        `https://mlsubba.herokuapp.com/api/user/login?name=${user}&password=${pwd}`
+      );
+      const res = await data.text();
+      if (res === "success") {
+        setLoggedInUser(user);
+        localStorage.setItem("loggedInUser", user);
+        toast.success(`Successfully Logegd in as ${user}`, toastSettings);
+        setTimeout(() => {
+          window.location.pathname = "/dashboard";
+        }, 1000);
+      } else if (res === "wrong password") {
+        toast.error(`Incorrect credentials`, toastSettings);
+      } else if (res === "register") {
+        toast.error(`User does not exist`, toastSettings);
+        setSignUpPage(true);
+      }
+    }
   };
 
   return (
@@ -64,14 +97,15 @@ const LoginPage = () => {
           />
           {signUpPage && (
             <TextField
-              label="Email"
+              label="Last Name"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={lName}
+              onChange={(e) => setLname(e.target.value)}
             />
           )}
           <TextField
             label="Password"
+            type="password"
             required
             value={pwd}
             o
@@ -79,10 +113,9 @@ const LoginPage = () => {
           />
           <Button
             fullWidth
-            //type="submit"
             variant="outlined"
             className="submit"
-            onClick={() => toast.error(" Wow so easy!", toastSettings)}
+            onClick={handleLogin}
           >
             {signUpPage ? "Sign Up" : "Login"}
           </Button>

@@ -5,9 +5,15 @@
   height: 60vh;
 }
 
-.mainBody {
+.sectionBody {
   background-color: whitesmoke;
   color: black;
   height: 60vh;
   overflow: scroll;
+}
+
+#logout {
+  position: absolute !important;
+  top: 10px;
+  right: 10px;
 }

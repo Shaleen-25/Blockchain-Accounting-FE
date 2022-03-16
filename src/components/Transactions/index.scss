@@ -25,9 +25,9 @@
 
 .react-dropdown-select-dropdown {
   margin-top: -10px;
-  max-height: 150px;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  max-height: 120px !important;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
 }
 
 .dropdown {

@@ -24,11 +24,7 @@ const columns = [
           onClick={() => console.log(params.id, "A")}
           sx={{ marginLeft: 2, marginRight: 10 }}
         />
-        <CancelIcon
-          color="error"
-          onClick={() => console.log(params.id, "R")}
-          //   sx={{ marginLeft: 15 }}
-        />
+        <CancelIcon color="error" onClick={() => console.log(params.id, "R")} />
       </>
     ),
   },
