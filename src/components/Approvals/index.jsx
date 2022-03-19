@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import useStore from "../../global-state";
 
 const columns = [
   { field: "id", headerName: "Transaction ID", flex: 1, sortable: false },
@@ -20,6 +21,7 @@ const columns = [
     renderCell: (params) => (
       <>
         <CheckCircleIcon
+          //disable={true}
           color="success"
           onClick={() => console.log(params.id, "A")}
           sx={{ marginLeft: 2, marginRight: 10 }}
@@ -33,16 +35,35 @@ const columns = [
 const rows = [
   {
     id: 11,
-    message: "some transaction message",
+    message: "Sample Transaction Message",
   },
-  { id: 22, message: "Lannister" },
-  { id: 33, message: "Lannister" },
-  { id: 44, message: "Stark" },
-  { id: 55, message: "Targaryen" },
-  { id: 66, message: "Melisandre" },
+  { id: 22, message: "Approve for Cash DR to Sales CR of Rs.40.0" },
+  { id: 33, message: "Approve for ICICI Bank DR to Sales CR of Rs.600.0" },
+  { id: 44, message: "Approve for Cash DR to Capital CR of Rs.100.0" },
 ];
 
-export default function DataGridDemo() {
+export default function Approvals({ users }) {
+  // const [selectedAcc, setSelectedAcc] = useState(null);
+  // const user = useStore((state) => state.loggedInUser);
+
+  // useEffect(() => {
+  //   const getApprovalsData = async () => {
+  //     const userId = 0; // users.find(({ firstName }) => firstName === user).id
+  //     const data = await fetch(
+  //       `https://mlsubba.herokuapp.com/api/consensus/findByApprover?approver=${userId}`
+  //     ).catch((err) => {
+  //       console.log("err", err);
+  //     });
+  //     const res = await data.json();
+  //     const accOptions = res.map((acc) => ({
+  //       label: acc.name,
+  //       value: acc.id,
+  //     }));
+  //     setSelectedAcc(accOptions);
+  //   };
+  //   getApprovalsData();
+  // }, []);
+
   return (
     <div
       style={{
