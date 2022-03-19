@@ -5,6 +5,7 @@ import Select from "react-dropdown-select";
 
 const columns = [
   { field: "id", headerName: "Serial No.", flex: 1, sortable: false },
+  { field: "date", headerName: "Date", flex: 1, sortable: false },
   {
     field: "particulars",
     headerName: "Particulars",
@@ -61,20 +62,23 @@ export default function Ledger() {
       console.log("err", err);
     });
     const res = await data.json();
-    const ledgerRows = res.map(({ particulars, amountCR, amountDR }, index) => {
-      total = total + amountDR - amountCR;
-      let suffix = "Dr";
-      if (total < 0) {
-        suffix = "Cr";
+    const ledgerRows = res.map(
+      ({ date, particulars, amountCR, amountDR }, index) => {
+        total = total + amountDR - amountCR;
+        let suffix = "Dr";
+        if (total < 0) {
+          suffix = "Cr";
+        }
+        return {
+          id: index + 1,
+          date: date.replace(/T.*/, ""),
+          particulars,
+          amountCR,
+          amountDR,
+          balance: `${Math.abs(total)} ${suffix}`,
+        };
       }
-      return {
-        id: index + 1,
-        particulars,
-        amountCR,
-        amountDR,
-        balance: `${Math.abs(total)} ${suffix}`,
-      };
-    });
+    );
     setLedgerData(ledgerRows);
   };
 

@@ -43,7 +43,7 @@ const AllTrans = ({ userID, setShowTrans, allAccounts }) => {
     ({ id, date, accountFrom, accountTo, amount, approved }) => {
       return {
         id: id + 1,
-        date,
+        date: date.replace(/T.*/, ""),
         accountFrom: allAccounts.find(({ id }) => id === accountFrom)?.value,
         accountTo: allAccounts.find(({ id }) => id === accountTo)?.value,
         amount,
