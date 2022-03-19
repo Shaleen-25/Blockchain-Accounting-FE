@@ -25,7 +25,7 @@ const columns = [
   },
 ];
 
-const AllTrans = ({ userID, setShowTrans }) => {
+const AllTrans = ({ userID, setShowTrans, allAccounts }) => {
   const [allTrans, setAllTrans] = useState([]);
 
   useEffect(() => {
@@ -44,8 +44,8 @@ const AllTrans = ({ userID, setShowTrans }) => {
       return {
         id: id + 1,
         date,
-        accountFrom,
-        accountTo,
+        accountFrom: allAccounts.find(({ id }) => id === accountFrom)?.value,
+        accountTo: allAccounts.find(({ id }) => id === accountTo)?.value,
         amount,
         approved,
       };
@@ -318,7 +318,11 @@ const Transactions = ({ users }) => {
           </Grid>
         </Grid>
       ) : (
-        <AllTrans userID={userID} setShowTrans={setShowTrans} />
+        <AllTrans
+          userID={userID}
+          setShowTrans={setShowTrans}
+          allAccounts={allAccountsDB}
+        />
       )}
     </>
   );
