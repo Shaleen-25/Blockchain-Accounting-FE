@@ -1,6 +1,7 @@
 import AddCircle from "@mui/icons-material/AddCircle";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { Button, Checkbox, Grid } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import cloneDeep from "lodash.clonedeep";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -10,12 +11,79 @@ import { toastSettings } from "../../constants";
 import useStore from "../../global-state";
 import "./index.scss";
 
-const options = [
-  { label: "Cash", value: "Cash" },
-  { label: "CGST Source", value: "CGST Source" },
-  { label: "ICICI Bank", value: "ICICI Bank" },
-  { label: "Sales", value: "Sales" },
+const columns = [
+  { field: "id", headerName: "Transaction ID", flex: 1, sortable: false },
+  { field: "date", headerName: "Transaction Date", flex: 1, sortable: false },
+  { field: "accountFrom", headerName: "From", flex: 1, sortable: false },
+  { field: "accountTo", headerName: "To", flex: 1, sortable: false },
+  { field: "amount", headerName: "Amount", flex: 1, sortable: false },
+  {
+    field: "approved",
+    headerName: "Approval Status",
+    flex: 1,
+    sortable: false,
+  },
 ];
+
+const AllTrans = ({ userID, setShowTrans }) => {
+  const [allTrans, setAllTrans] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(
+        "https://mlsubba.herokuapp.com/api/transaction/all"
+      );
+      let trans = await res.json();
+      trans = trans.filter(({ user }) => user === userID);
+      setAllTrans(trans);
+    })();
+  }, [userID]);
+
+  const rows = allTrans.map(
+    ({ id, date, accountFrom, accountTo, amount, approved }) => {
+      return {
+        id: id + 1,
+        date,
+        accountFrom,
+        accountTo,
+        amount,
+        approved,
+      };
+    }
+  );
+
+  return (
+    <>
+      <h3>All Transactions</h3>
+      <div
+        style={{
+          border: "1px solid black",
+          margin: "auto",
+          height: "80%",
+          width: "95%",
+        }}
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={6}
+          disableColumnMenu={true}
+          disableColumnFilter={true}
+          rowsPerPageOptions={[5]}
+          checkboxSelection={false}
+          disableSelectionOnClick
+        />
+      </div>
+      <Button
+        variant="outlined"
+        className="submit"
+        onClick={() => setShowTrans(false)}
+      >
+        Enter New Transaction
+      </Button>
+    </>
+  );
+};
 
 const Info = ({
   index,
@@ -79,9 +147,10 @@ const Transactions = ({ users }) => {
   const [accsr, setAccsr] = useState([{}]);
   const [msg, setMsg] = useState("");
   const [isCredit, setIsCredit] = useState(false);
-  const user = useStore((state) => state.loggedInUser);
+  const [showTrans, setShowTrans] = useState(false);
 
-  console.log({ accs, accsr, allAccountsDB });
+  const user = useStore((state) => state.loggedInUser);
+  const userID = users.find(({ firstName }) => firstName === user)?.id;
 
   const leftAccountIDs = allAccountsDB
     .filter(({ label }) => accs.map(({ id }) => id).includes(label))
@@ -92,13 +161,6 @@ const Transactions = ({ users }) => {
 
   const leftAccountAmts = accs.map(({ amt }) => amt);
   const rightAccountAmts = accsr.map(({ amt }) => amt);
-
-  console.log({
-    leftAccountIDs,
-    rightAccountIDs,
-    leftAccountAmts,
-    rightAccountAmts,
-  });
 
   useEffect(() => {
     const getAccountsData = async () => {
@@ -195,7 +257,7 @@ const Transactions = ({ users }) => {
             accountTo: rightAccountIDs,
             amountTo: rightAccountAmts,
             message: "msg",
-            user: users.find(({ firstName }) => firstName === user).id,
+            user: userID,
           }),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -212,38 +274,52 @@ const Transactions = ({ users }) => {
 
   return (
     <>
-      <Grid className="transactions" container spacing={2}>
-        <Grid className="left" item xs={6}>
-          FROM
-          {displayAccounts("left")}
+      {!showTrans ? (
+        <Grid className="transactions" container spacing={2}>
+          <Grid className="left" item xs={6}>
+            FROM
+            {displayAccounts("left")}
+          </Grid>
+          <Grid className="right" item xs={6}>
+            TO
+            {displayAccounts("right")}
+          </Grid>
+          <Grid item xs={2} id="checkbox">
+            <Checkbox onChange={() => setIsCredit((prev) => !prev)} />{" "}
+            <span>Credit</span>
+          </Grid>
+          <Grid item xs={4}>
+            <input
+              className="defaultInput"
+              value={msg}
+              placeholder="Enter Transaction Message"
+              onChange={(e) => setMsg(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <Button
+              fullWidth
+              variant="outlined"
+              className="submit"
+              onClick={handleSave}
+            >
+              Save
+            </Button>
+          </Grid>
+          <Grid item xs={3}>
+            <Button
+              // fullWidth
+              variant="outlined"
+              className="submit"
+              onClick={() => setShowTrans(true)}
+            >
+              View All Transactions
+            </Button>
+          </Grid>
         </Grid>
-        <Grid className="right" item xs={6}>
-          TO
-          {displayAccounts("right")}
-        </Grid>
-        <Grid item xs={2} id="checkbox">
-          <Checkbox onChange={() => setIsCredit((prev) => !prev)} />{" "}
-          <span>Credit</span>
-        </Grid>
-        <Grid item xs={4}>
-          <input
-            className="defaultInput"
-            value={msg}
-            placeholder="Enter Transaction Message"
-            onChange={(e) => setMsg(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <Button
-            fullWidth
-            variant="outlined"
-            className="submit"
-            onClick={handleSave}
-          >
-            Save
-          </Button>
-        </Grid>
-      </Grid>
+      ) : (
+        <AllTrans userID={userID} setShowTrans={setShowTrans} />
+      )}
     </>
   );
 };
