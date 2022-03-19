@@ -186,7 +186,7 @@ const Transactions = ({ users }) => {
       toast.error("Transaction message should not be empty", toastSettings);
     } else {
       try {
-        await fetch("https://mlsubba.herokuapp.com/api/transaction/add'", {
+        await fetch("https://mlsubba.herokuapp.com/api/transaction/add", {
           method: "POST",
           body: JSON.stringify({
             accountFrom: leftAccountIDs,

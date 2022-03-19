@@ -68,7 +68,7 @@ const LoginPage = () => {
       if (res === "success") {
         setLoggedInUser(user);
         localStorage.setItem("loggedInUser", user);
-        toast.success(`Successfully Logegd in as ${user}`, toastSettings);
+        toast.success(`Successfully Logged in as ${user}`, toastSettings);
         setTimeout(() => {
           window.location.pathname = "/dashboard";
         }, 1000);

@@ -35,6 +35,7 @@ export default function Ledger() {
   const [selectedAcc, setSelectedAcc] = useState(null);
   const [ledgerData, setLedgerData] = useState(null);
   const [allAccountsDB, setAllAccountsDB] = useState([]);
+  let total = 0;
 
   useEffect(() => {
     const getAccountsData = async () => {
@@ -60,14 +61,20 @@ export default function Ledger() {
       console.log("err", err);
     });
     const res = await data.json();
-    const ledgerRows = res.map(
-      ({ particulars, amountCR, amountDR }, index) => ({
+    const ledgerRows = res.map(({ particulars, amountCR, amountDR }, index) => {
+      total = total + amountDR - amountCR;
+      let suffix = "Dr";
+      if (total < 0) {
+        suffix = "Cr";
+      }
+      return {
         id: index + 1,
         particulars,
         amountCR,
         amountDR,
-      })
-    );
+        balance: `${Math.abs(total)} ${suffix}`,
+      };
+    });
     setLedgerData(ledgerRows);
   };
 
