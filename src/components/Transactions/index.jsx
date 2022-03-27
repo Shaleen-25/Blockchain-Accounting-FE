@@ -117,8 +117,7 @@ const Info = ({
         <input
           type="number"
           className="defaultInput"
-          value={accs[index].amt || 0}
-          //defaultValue={0}
+          value={accs[index].amt}
           onChange={(e) => handleUpdate("amount", index, e.target.value, side)}
         />
       </div>
@@ -209,7 +208,7 @@ const Transactions = ({ users }) => {
     } else {
       setter((prev) => {
         const tempArr = cloneDeep(prev);
-        tempArr[i].amt = Number(val);
+        tempArr[i].amt = Number(val || 0);
         return tempArr;
       });
     }
@@ -235,10 +234,10 @@ const Transactions = ({ users }) => {
 
   const handleSave = async () => {
     const leftAmt = accs.reduce((acc, curr) => {
-      return acc + curr.amt;
+      return acc + (curr.amt || 0);
     }, 0);
     const rightAmt = accsr.reduce((acc, curr) => {
-      return acc + curr.amt;
+      return acc + (curr.amt || 0);
     }, 0);
     if (!rightAmt || !leftAmt) {
       toast.error("From and To total amount should not be 0", toastSettings);
@@ -308,7 +307,7 @@ const Transactions = ({ users }) => {
           </Grid>
           <Grid item xs={3}>
             <Button
-              // fullWidth
+              fullWidth
               variant="outlined"
               className="submit"
               onClick={() => setShowTrans(true)}

@@ -8,11 +8,12 @@ import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
 import Transactions from "../Transactions";
 import Approvals from "../Approvals";
-import { useJsonToCsv } from "react-json-csv";
 import useStore from "../../global-state";
 import { Button } from "@material-ui/core";
 import ManageAccounts from "../ManageAccounts";
 import Ledger from "../Ledger";
+import Reports from "../Reports";
+import Blockchain from "../Blockchain";
 
 const blue = {
   50: "#F0F7FF",
@@ -76,20 +77,6 @@ const TabsList = styled(TabsListUnstyled)`
   align-content: space-between;
 `;
 
-const filename = "Ledger Report",
-  fields = {
-    index: "Transaction ID",
-    amount: "Amount",
-  },
-  style = {
-    padding: "15px",
-  },
-  data = [
-    { index: 123, amount: "10897" },
-    { index: 456, amount: "3562" },
-  ],
-  text = "Convert Json to Csv";
-
 const Logut = () => {
   const setUser = useStore((state) => state.setLoggedInUser);
   return (
@@ -119,7 +106,6 @@ const Dasboard = () => {
     })();
   }, []);
 
-  const { saveAsCsv } = useJsonToCsv();
   return (
     <>
       <Logut />
@@ -131,6 +117,7 @@ const Dasboard = () => {
             <Tab>Approvals</Tab>
             <Tab>Reports</Tab>
             <Tab>Ledgers</Tab>
+            <Tab>Blockchain</Tab>
           </TabsList>
           <TabPanel value={0}>
             <div className="sectionBody">
@@ -149,17 +136,17 @@ const Dasboard = () => {
           </TabPanel>
           <TabPanel value={3}>
             <div className="sectionBody">
-              <h3>Reports</h3>
-              <button
-                onClick={() => saveAsCsv({ data, style, fields, filename })}
-              >
-                Download Report
-              </button>
+              <Reports />
             </div>
           </TabPanel>
           <TabPanel value={4}>
             <div className="sectionBody">
               <Ledger />
+            </div>
+          </TabPanel>
+          <TabPanel value={5}>
+            <div className="sectionBody">
+              <Blockchain />
             </div>
           </TabPanel>
         </TabsUnstyled>
