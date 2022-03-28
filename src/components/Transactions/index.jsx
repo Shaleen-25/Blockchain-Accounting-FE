@@ -255,7 +255,7 @@ const Transactions = ({ users }) => {
             accountFromIsCredit: isCredit,
             accountTo: rightAccountIDs,
             amountTo: rightAccountAmts,
-            message: "msg",
+            message: msg,
             user: userID,
           }),
           headers: {

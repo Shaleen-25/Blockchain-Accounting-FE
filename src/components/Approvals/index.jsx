@@ -12,24 +12,25 @@ export default function Approvals({ users }) {
   const user = useStore((state) => state.loggedInUser);
   const userId = users?.find(({ firstName }) => firstName === user).id;
 
+  const getApprovalsData = async () => {
+    const data = await fetch(
+      `https://mlsubba.herokuapp.com/api/consensus/findByApprover?approver=${userId}`
+    ).catch((err) => {
+      console.log("err", err);
+    });
+    const res = await data.json();
+    const approvals = res.map(
+      ({ id, message, transactionNum, approverStatus }) => ({
+        id,
+        transactionNum,
+        msg: message,
+        status: approverStatus,
+      })
+    );
+    setApprovalData(approvals);
+  };
+
   useEffect(() => {
-    const getApprovalsData = async () => {
-      const data = await fetch(
-        `https://mlsubba.herokuapp.com/api/consensus/findByApprover?approver=${userId}`
-      ).catch((err) => {
-        console.log("err", err);
-      });
-      const res = await data.json();
-      const approvals = res.map(
-        ({ id, message, transactionNum, approverStatus }) => ({
-          id,
-          transactionNum,
-          msg: message,
-          status: approverStatus,
-        })
-      );
-      setApprovalData(approvals);
-    };
     getApprovalsData();
   }, []);
 
@@ -39,6 +40,7 @@ export default function Approvals({ users }) {
         params.row.transactionNum
       }&approver=${userId}&approve=${true}`
     );
+    await getApprovalsData();
     toast.info("Transaction Approval Sent", toastSettings);
   };
 
@@ -48,6 +50,7 @@ export default function Approvals({ users }) {
         params.row.transactionNum
       }&approver=${userId}&approve=${false}`
     );
+    await getApprovalsData();
     toast.info("Transaction Rejection Sent", toastSettings);
   };
 
