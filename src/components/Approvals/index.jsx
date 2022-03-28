@@ -10,7 +10,7 @@ import { toastSettings } from "../../constants";
 export default function Approvals({ users }) {
   const [approvalData, setApprovalData] = useState(null);
   const user = useStore((state) => state.loggedInUser);
-  const userId = users.find(({ firstName }) => firstName === user).id;
+  const userId = users?.find(({ firstName }) => firstName === user).id;
 
   useEffect(() => {
     const getApprovalsData = async () => {

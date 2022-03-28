@@ -131,7 +131,7 @@ const Dasboard = () => {
           </TabPanel>
           <TabPanel value={2}>
             <div className="sectionBody">
-              <Approvals />
+              <Approvals users={users} />
             </div>
           </TabPanel>
           <TabPanel value={3}>
