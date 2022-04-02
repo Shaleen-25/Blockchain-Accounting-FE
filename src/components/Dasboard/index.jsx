@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import "./index.scss";
 import { styled } from "@mui/system";
 import TabsUnstyled from "@mui/base/TabsUnstyled";
 import TabsListUnstyled from "@mui/base/TabsListUnstyled";
 import TabPanelUnstyled from "@mui/base/TabPanelUnstyled";
 import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
-import Transactions from "../Transactions";
 import Approvals from "../Approvals";
 import useStore from "../../global-state";
 import { Button } from "@material-ui/core";
-import ManageAccounts from "../ManageAccounts";
-import Ledger from "../Ledger";
 import Reports from "../Reports";
 import Blockchain from "../Blockchain";
+import Logs from "../Logs";
+import Accounting from "../Transactions";
+
+import "./index.scss";
 
 const blue = {
   50: "#F0F7FF",
@@ -79,18 +79,21 @@ const TabsList = styled(TabsListUnstyled)`
 
 const Logut = () => {
   const setUser = useStore((state) => state.setLoggedInUser);
+  const user = useStore((state) => state.loggedInUser);
   return (
-    <Button
-      variant="contained"
-      id="logout"
-      onClick={() => {
-        setUser("");
-        localStorage.removeItem("loggedInUser");
-        window.location.pathname = "/";
-      }}
-    >
-      LOG OUT
-    </Button>
+    <div id="logout">
+      <p>Hi, {user}</p>
+      <Button
+        variant="contained"
+        onClick={() => {
+          setUser("");
+          localStorage.removeItem("loggedInUser");
+          window.location.pathname = "/";
+        }}
+      >
+        LOG OUT
+      </Button>
+    </div>
   );
 };
 
@@ -106,47 +109,43 @@ const Dasboard = () => {
     })();
   }, []);
 
+  const userID = users.find(({ firstName }) => firstName === user)?.id;
+
   return (
     <>
       <Logut />
       <div className="dashboard">
         <TabsUnstyled defaultValue={0}>
           <TabsList>
-            <Tab>Transactions</Tab>
-            <Tab>Manage Accounts</Tab>
+            <Tab>Accounting</Tab>
             <Tab>Approvals</Tab>
             <Tab>Reports</Tab>
-            <Tab>Ledgers</Tab>
             <Tab>Blockchain</Tab>
+            <Tab>Logs</Tab>
           </TabsList>
           <TabPanel value={0}>
             <div className="sectionBody">
-              <Transactions users={users} />
+              <Accounting users={users} userID={userID} />
             </div>
           </TabPanel>
           <TabPanel value={1}>
             <div className="sectionBody">
-              <ManageAccounts users={users} />
+              <Approvals users={users} />
             </div>
           </TabPanel>
           <TabPanel value={2}>
             <div className="sectionBody">
-              <Approvals users={users} />
+              <Reports />
             </div>
           </TabPanel>
           <TabPanel value={3}>
             <div className="sectionBody">
-              <Reports />
+              <Blockchain />
             </div>
           </TabPanel>
           <TabPanel value={4}>
             <div className="sectionBody">
-              <Ledger />
-            </div>
-          </TabPanel>
-          <TabPanel value={5}>
-            <div className="sectionBody">
-              <Blockchain />
+              <Logs users={users} />
             </div>
           </TabPanel>
         </TabsUnstyled>

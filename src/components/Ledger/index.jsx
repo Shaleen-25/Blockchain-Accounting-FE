@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-dropdown-select";
 
+import "./index.scss";
+
 const columns = [
   { field: "id", headerName: "Serial No.", flex: 1, sortable: false },
   { field: "date", headerName: "Date", flex: 1, sortable: false },
@@ -83,7 +85,7 @@ export default function Ledger() {
   };
 
   return (
-    <div style={{ margin: 30, height: "420px" }}>
+    <div style={{ height: "90%" }}>
       <div className="dropdown">
         <h4 style={{ textAlign: "left", lineHeight: 0 }}>Choose Account</h4>
         <Select
@@ -99,10 +101,10 @@ export default function Ledger() {
           <DataGrid
             rows={ledgerData}
             columns={columns}
-            pageSize={6}
+            pageSize={7}
             disableColumnMenu={true}
             disableColumnFilter={true}
-            rowsPerPageOptions={[6]}
+            rowsPerPageOptions={[7]}
             checkboxSelection={false}
             disableSelectionOnClick
           />
