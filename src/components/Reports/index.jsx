@@ -4,9 +4,9 @@ import Select from "react-dropdown-select";
 import Button from "@material-ui/core/Button";
 
 const fields = {
-    accountName: "Account Name",
-    amountdr: "Debits",
-    amountcr: "Credits",
+    accountName: "Particulars",
+    amountdr: "Debit",
+    amountcr: "Credit",
   },
   style = {
     padding: "25px",

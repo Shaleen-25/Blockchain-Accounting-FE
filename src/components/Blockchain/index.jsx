@@ -72,7 +72,10 @@ const Blockchain = () => {
         <DialogTitle>Transaction Details</DialogTitle>
         <DialogContent>
           <div style={{ height: "100%" }}>
-            <ViewTransactions transactionNum={selectedTrancNum} />
+            <ViewTransactions
+              transactionNum={selectedTrancNum}
+              showAll={false}
+            />
           </div>
         </DialogContent>
         <DialogActions>
