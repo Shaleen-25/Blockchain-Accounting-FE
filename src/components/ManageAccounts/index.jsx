@@ -7,10 +7,15 @@ import { toastSettings } from "../../constants";
 import "./index.scss";
 
 const typeOptions = [
-  { label: "Asset", id: "Asset" },
-  { label: "Liability", id: "Liability" },
-  { label: "Income", id: "Income" },
-  { label: "Expense", id: "Expense" },
+  { label: "Fixed Asset", id: "Fixed Asset" },
+  { label: "Current Asset", id: "Current Asset" },
+  { label: "Fixed Liability", id: "Fixed Liability" },
+  { label: "Current Liability", id: "Current Liability" },
+  { label: "Direct Income", id: "Direct Income" },
+  { label: "Indirect Income", id: "Indirect Income" },
+  { label: "Direct Expense", id: "Direct Expense" },
+  { label: "Indirect Expense", id: "Indirect Expense" },
+  { label: "Capital", id: "Capital" },
 ];
 
 const ManageAccounts = ({ users }) => {
@@ -61,7 +66,7 @@ const ManageAccounts = ({ users }) => {
       </div>
       <div className="dropdown">
         <h4 style={{ textAlign: "left", lineHeight: 0 }}>
-          Choose Account Type
+          Choose Account Group
         </h4>
         <Select
           values={[

@@ -130,7 +130,7 @@ export default function Approvals({ users }) {
     },
     {
       field: "message",
-      headerName: "Transaction message",
+      headerName: "Narration",
       flex: 2,
       sortable: false,
       disableClickEventBubbling: true,
