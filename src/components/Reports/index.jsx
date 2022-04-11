@@ -68,6 +68,7 @@ const Reports = () => {
           alignItems: "center",
         }}
       >
+          
         <div className="dropdown">
           <h4 style={{ textAlign: "left", lineHeight: 0 }}>
             Choose Report Format
@@ -93,6 +94,11 @@ const Reports = () => {
           </Button>
         </div>
       </div>
+<h2>Welcome to reports Section</h2>
+	<h4> Click to download reports</h4>	
+    <a href="https://mlsubba.herokuapp.com/api/report/download/tb.xlsx" class="btn btn-primary">Trial Balance</a>
+	<a href="https://mlsubba.herokuapp.com/api/report/download/income.xlsx" class="btn btn-primary">Income Statement</a>
+	<a href="https://mlsubba.herokuapp.com/api/report/download/bs.xlsx" class="btn btn-primary">Balance Sheet</a>
     </>
   );
 };
