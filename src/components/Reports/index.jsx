@@ -29,22 +29,24 @@ const Reports = () => {
       totalDr = 0;
     const res = await fetch(`https://mlsubba.herokuapp.com/api/report/${id}`);
     const data = await res.json();
-    const reportData = data.map(({ particulars, amountDR, amountCR }) => {
-      let amountcr = 0,
-        amountdr = 0;
-      if (amountCR > amountDR) {
-        amountcr = Math.abs(amountCR - amountDR);
-      } else {
-        amountdr = Math.abs(amountDR - amountCR);
+    const reportData = data?.["Trial Balance"]?.map(
+      ({ accountName, amountDR, amountCR }) => {
+        let amountcr = 0,
+          amountdr = 0;
+        if (amountCR > amountDR) {
+          amountcr = Math.abs(amountCR - amountDR);
+        } else {
+          amountdr = Math.abs(amountDR - amountCR);
+        }
+        totalCr += amountcr;
+        totalDr += amountdr;
+        return {
+          accountName,
+          amountdr,
+          amountcr,
+        };
       }
-      totalCr += amountcr;
-      totalDr += amountdr;
-      return {
-        accountName: particulars,
-        amountdr,
-        amountcr,
-      };
-    });
+    );
 
     reportData.push({
       accountName: "Total",
@@ -82,6 +84,7 @@ const Reports = () => {
             fullWidth
             variant="outlined"
             className="submit"
+            disabled={!reportData.length}
             onClick={() =>
               saveAsCsv({ data: reportData || [], style, fields, filename })
             }

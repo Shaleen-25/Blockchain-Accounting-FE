@@ -43,7 +43,7 @@ const LoginPage = () => {
     if (signUpPage) {
       //post req to add user
       try {
-        await fetch("https://mlsubba.herokuapp.com/api/user/add", {
+        const res = await fetch("https://mlsubba.herokuapp.com/api/user/add", {
           method: "POST",
           body: JSON.stringify({
             firstName: user,
@@ -54,6 +54,10 @@ const LoginPage = () => {
             "Content-type": "application/json; charset=UTF-8",
           },
         });
+        const data = await res.json();
+        if (data?.status === 500) {
+          toast.error(`Could not create user. Try again`, toastSettings);
+        }
       } catch (err) {
         console.log("error", err);
       }

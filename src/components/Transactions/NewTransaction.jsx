@@ -64,7 +64,7 @@ const Info = ({
   );
 };
 
-const NewTransaction = ({ users, userID }) => {
+const NewTransaction = ({ userID }) => {
   const [allAccountsDB, setAllAccountsDB] = useState([]);
   const [accs, setAccs] = useState([{}]);
   const [accsr, setAccsr] = useState([{}]);

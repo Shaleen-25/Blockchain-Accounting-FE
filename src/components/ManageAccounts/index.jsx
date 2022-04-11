@@ -31,7 +31,7 @@ const ManageAccounts = ({ users }) => {
 
   const handleSubmit = async () => {
     try {
-      await fetch("https://mlsubba.herokuapp.com/api/account/add", {
+      const res = await fetch("https://mlsubba.herokuapp.com/api/account/add", {
         method: "POST",
         body: JSON.stringify({
           name: accName,
@@ -43,7 +43,10 @@ const ManageAccounts = ({ users }) => {
           "Content-type": "application/json; charset=UTF-8",
         },
       });
-      toast.success("Successfully Added New Account");
+      const data = await res.json();
+      if (data?.status === 500)
+        toast.error("Failed to add New Account. Try again");
+      else toast.success("Successfully Added New Account", toastSettings);
     } catch (err) {
       console.log("error", err);
       toast.error(err.message, toastSettings);
