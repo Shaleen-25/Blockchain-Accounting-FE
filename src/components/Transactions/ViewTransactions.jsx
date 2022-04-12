@@ -1,6 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import useStore from "../../global-state";
 
 import "./index.scss";
 
@@ -18,8 +19,9 @@ const columns = [
   },
 ];
 
-const ViewTransactions = ({ userID, transactionNum, showAll = true }) => {
+const ViewTransactions = ({ transactionNum, showAll = true }) => {
   const [allTrans, setAllTrans] = useState([]);
+  const currUser = useStore((state) => state.loggedInUser);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +33,7 @@ const ViewTransactions = ({ userID, transactionNum, showAll = true }) => {
 
       let data = await res.json();
       if (showAll) {
-        data = data.filter(({ user }) => user === userID);
+        data = data.filter(({ user }) => user === currUser);
       }
       const trans = data.map(
         ({ id, date, accountFrom, accountTo, amount, approved }) => {

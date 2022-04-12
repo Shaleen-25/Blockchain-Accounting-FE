@@ -45,6 +45,17 @@ const Info = ({
           onChange={(e) => handleUpdate("amount", index, e.target.value, side)}
         />
       </div>
+      <div className="dropdown">
+        <h4 style={{ textAlign: "left", lineHeight: 0 }}>Enter Quantity</h4>
+        <input
+          type="number"
+          className="defaultInput"
+          value={accs[index].qty}
+          onChange={(e) =>
+            handleUpdate("quantity", index, e.target.value, side)
+          }
+        />
+      </div>
       {last ? (
         <div className="add">
           <AddCircle
@@ -80,6 +91,9 @@ const NewTransaction = ({ userID }) => {
 
   const leftAccountAmts = accs.map(({ amt }) => amt);
   const rightAccountAmts = accsr.map(({ amt }) => amt);
+
+  const leftAccountQtys = accs.map(({ qty }) => qty);
+  const rightAccountQtys = accsr.map(({ qty }) => qty);
 
   useEffect(() => {
     const getAccountsData = async () => {
@@ -125,10 +139,16 @@ const NewTransaction = ({ userID }) => {
 
         return tempArr;
       });
-    } else {
+    } else if (type === "amount") {
       setter((prev) => {
         const tempArr = cloneDeep(prev);
         tempArr[i].amt = Number(val || 0);
+        return tempArr;
+      });
+    } else {
+      setter((prev) => {
+        const tempArr = cloneDeep(prev);
+        tempArr[i].qty = Number(val || 0);
         return tempArr;
       });
     }
@@ -170,6 +190,8 @@ const NewTransaction = ({ userID }) => {
         await fetch("https://mlsubba.herokuapp.com/api/transaction/add", {
           method: "POST",
           body: JSON.stringify({
+            quantityFrom: leftAccountQtys,
+            quantityTo: rightAccountQtys,
             accountFrom: leftAccountIDs,
             amountFrom: leftAccountAmts,
             accountFromIsCredit: isCredit,
