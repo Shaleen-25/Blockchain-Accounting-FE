@@ -232,7 +232,7 @@ const NewTransaction = ({ userID }) => {
           <input
             className="defaultInput"
             value={msg}
-            placeholder="Enter Transaction Message"
+            placeholder="Enter Transaction Narration"
             onChange={(e) => setMsg(e.target.value)}
           />
         </Grid>
