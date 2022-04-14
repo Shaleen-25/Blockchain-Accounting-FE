@@ -32,7 +32,7 @@ const Info = ({
           values={[{ label: accs[index].id, value: accs[index].id }]}
           options={allAccountsDB}
           onChange={(values) => {
-            handleUpdate("account", index, values[0].label, side);
+            handleUpdate("account", index, values[0]?.label, side);
           }}
         />
       </div>

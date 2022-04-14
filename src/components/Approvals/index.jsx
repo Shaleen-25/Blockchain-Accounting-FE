@@ -249,7 +249,7 @@ export default function Approvals({ users }) {
             onChange={(values) => {
               const filteredRows = approvalData.filter(
                 ({ status }) =>
-                  values[0].value === "All" || status === values[0].value
+                  values[0]?.value === "All" || status === values[0]?.value
               );
               setFilteredData(filteredRows);
             }}

@@ -58,30 +58,32 @@ export default function Ledger() {
   }, []);
 
   const getLedgerData = async (id) => {
-    const data = await fetch(
-      `https://mlsubba.herokuapp.com/api/ledger/find?accountName=${id}`
-    ).catch((err) => {
-      console.log("err", err);
-    });
-    const res = await data.json();
-    const ledgerRows = res.map(
-      ({ date, particulars, amountCR, amountDR }, index) => {
-        total = total + amountDR - amountCR;
-        let suffix = "Dr";
-        if (total < 0) {
-          suffix = "Cr";
+    if (id) {
+      const data = await fetch(
+        `https://mlsubba.herokuapp.com/api/ledger/find?accountName=${id}`
+      ).catch((err) => {
+        console.log("err", err);
+      });
+      const res = await data.json();
+      const ledgerRows = res.map(
+        ({ date, particulars, amountCR, amountDR }, index) => {
+          total = total + amountDR - amountCR;
+          let suffix = "Dr";
+          if (total < 0) {
+            suffix = "Cr";
+          }
+          return {
+            id: index + 1,
+            date: date.replace(/T.*/, ""),
+            particulars,
+            amountCR,
+            amountDR,
+            balance: `${Math.abs(total)} ${suffix}`,
+          };
         }
-        return {
-          id: index + 1,
-          date: date.replace(/T.*/, ""),
-          particulars,
-          amountCR,
-          amountDR,
-          balance: `${Math.abs(total)} ${suffix}`,
-        };
-      }
-    );
-    setLedgerData(ledgerRows);
+      );
+      setLedgerData(ledgerRows);
+    }
   };
 
   return (
@@ -92,7 +94,7 @@ export default function Ledger() {
           options={allAccountsDB}
           onChange={(values) => {
             setSelectedAcc(values[0]);
-            getLedgerData(values[0].value);
+            getLedgerData(values[0]?.value);
           }}
         />
       </div>

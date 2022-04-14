@@ -22,12 +22,12 @@ const Blockchain = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 1, sortable: false },
-    { field: "date", headerName: "Date", flex: 1, sortable: false },
+    { field: "id", headerName: "ID", flex: 0.3, sortable: false },
+    { field: "date", headerName: "Date", flex: 0.8, sortable: false },
     {
       field: "transactionNum",
       headerName: "Transaction ID",
-      flex: 1,
+      flex: 0.7,
       sortable: false,
       renderCell: (params) => (
         <div
@@ -41,8 +41,18 @@ const Blockchain = () => {
         </div>
       ),
     },
-    { field: "block_hash", headerName: "Block Hash", flex: 1, sortable: false },
-    { field: "blockchain", headerName: "Blockchain", flex: 1, sortable: false },
+    {
+      field: "block_hash",
+      headerName: "Block Hash",
+      flex: 1.7,
+      sortable: false,
+    },
+    {
+      field: "blockchain",
+      headerName: "Blockchain",
+      flex: 1.7,
+      sortable: false,
+    },
   ];
 
   useEffect(() => {
@@ -57,7 +67,7 @@ const Blockchain = () => {
           id,
           transactionNum,
           block_hash,
-          date: date.replace(/T.*/, ""),
+          date: date.replace("T", " ").replace(/\..*/, ""),
           blockchain,
         })
       );

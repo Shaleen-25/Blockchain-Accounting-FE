@@ -9,16 +9,31 @@ import "./index.scss";
 const typeOptions = [
   { label: "Fixed Asset", id: "Fixed Asset" },
   { label: "Current Asset-Sundry Debtors", id: "Current Asset-Sundry Debtors" },
-  { label: "Current Asset-Bills Receivable", id: "Current Asset-Bills Receivable" },
+  {
+    label: "Current Asset-Bills Receivable",
+    id: "Current Asset-Bills Receivable",
+  },
   { label: "Current Asset-Stock in Hand", id: "Current Asset-Stock in Hand" },
   { label: "Current Asset-Cash in Hand", id: "Current Asset-Cash in Hand" },
   { label: "Current Asset-Cash at Bank", id: "Current Asset-Cash at Bank" },
-  { label: "Current Asset-Other Current Asset", id: "Current Asset-Other Current Asset" },
+  {
+    label: "Current Asset-Other Current Asset",
+    id: "Current Asset-Other Current Asset",
+  },
   { label: "Fixed Liability", id: "Fixed Liability" },
-  { label: "Current Liability-Sundry Creditors", id: "Current Liability-Sundry Creditors" },
-  { label: "Current Liability-Bills Payable", id: "Current Liability-Bills Payable" },
+  {
+    label: "Current Liability-Sundry Creditors",
+    id: "Current Liability-Sundry Creditors",
+  },
+  {
+    label: "Current Liability-Bills Payable",
+    id: "Current Liability-Bills Payable",
+  },
   { label: "Current Liability-Provisions", id: "Current Liability-Provisions" },
-  { label: "Current Liability-Other Current Liability", id: "Current Liability-Other Current Liability" },
+  {
+    label: "Current Liability-Other Current Liability",
+    id: "Current Liability-Other Current Liability",
+  },
   { label: "Direct Income", id: "Direct Income" },
   { label: "Indirect Income", id: "Indirect Income" },
   { label: "Direct Expense", id: "Direct Expense" },
@@ -89,7 +104,7 @@ const ManageAccounts = ({ users }) => {
           ]}
           options={typeOptions}
           onChange={(values) => {
-            setType(values[0].id);
+            setType(values[0]?.id || "");
           }}
         />
         <br />
@@ -102,7 +117,7 @@ const ManageAccounts = ({ users }) => {
           values={[{ label: "Select Approver", value: "test" }]}
           options={userOptions}
           onChange={(values) => {
-            setAppr1(values[0].id);
+            setAppr1(values[0]?.id || "");
           }}
         />
         <br />
@@ -115,7 +130,7 @@ const ManageAccounts = ({ users }) => {
           values={[{ label: "Select Approver", value: "test" }]}
           options={userOptions}
           onChange={(values) => {
-            setAppr2(values[0].id);
+            setAppr2(values[0]?.id || "");
           }}
         />
         <br />
