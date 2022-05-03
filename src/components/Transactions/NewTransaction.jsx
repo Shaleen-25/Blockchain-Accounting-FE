@@ -18,6 +18,8 @@ const Info = ({
   allAccountsDB,
 }) => {
   const last = index === accs.length - 1;
+  const qtyDisplay = ["Purchase", "Sale"];
+
   return (
     <div
       style={{
@@ -45,17 +47,19 @@ const Info = ({
           onChange={(e) => handleUpdate("amount", index, e.target.value, side)}
         />
       </div>
-      <div className="dropdown">
-        <h4 style={{ textAlign: "left", lineHeight: 0 }}>Enter Quantity</h4>
-        <input
-          type="number"
-          className="defaultInput"
-          value={accs[index].qty}
-          onChange={(e) =>
-            handleUpdate("quantity", index, e.target.value, side)
-          }
-        />
-      </div>
+      {qtyDisplay.includes(accs[index]?.id) ? (
+        <div className="dropdown">
+          <h4 style={{ textAlign: "left", lineHeight: 0 }}>Enter Quantity</h4>
+          <input
+            type="number"
+            className="defaultInput"
+            value={accs[index].qty}
+            onChange={(e) =>
+              handleUpdate("quantity", index, e.target.value, side)
+            }
+          />
+        </div>
+      ) : null}
       {last ? (
         <div className="add">
           <AddCircle
@@ -75,12 +79,10 @@ const Info = ({
   );
 };
 
-const NewTransaction = ({ userID }) => {
-  const [allAccountsDB, setAllAccountsDB] = useState([]);
+const NewTransaction = ({ userID, allAccountsDB }) => {
   const [accs, setAccs] = useState([{}]);
   const [accsr, setAccsr] = useState([{}]);
   const [msg, setMsg] = useState("");
-  const [isCredit, setIsCredit] = useState(false);
 
   const leftAccountIDs = allAccountsDB
     .filter(({ label }) => accs.map(({ id }) => id).includes(label))
@@ -92,26 +94,8 @@ const NewTransaction = ({ userID }) => {
   const leftAccountAmts = accs.map(({ amt }) => amt);
   const rightAccountAmts = accsr.map(({ amt }) => amt);
 
-  const leftAccountQtys = accs.map(({ qty }) => qty);
-  const rightAccountQtys = accsr.map(({ qty }) => qty);
-
-  useEffect(() => {
-    const getAccountsData = async () => {
-      const data = await fetch(
-        "https://mlsubba.herokuapp.com/api/account/all"
-      ).catch((err) => {
-        console.log("err", err);
-      });
-      const res = await data.json();
-      const accOptions = res.map((acc) => ({
-        label: acc.name,
-        value: acc.name,
-        id: acc.id,
-      }));
-      setAllAccountsDB(accOptions);
-    };
-    getAccountsData();
-  }, []);
+  const leftAccountQtys = accs.map(({ qty }) => qty || 0);
+  const rightAccountQtys = accsr.map(({ qty }) => qty || 0);
 
   const handleAddorDelete = (i, add, side) => {
     const setter = side === "left" ? setAccs : setAccsr;
@@ -194,7 +178,7 @@ const NewTransaction = ({ userID }) => {
             quantityTo: rightAccountQtys,
             accountFrom: leftAccountIDs,
             amountFrom: leftAccountAmts,
-            accountFromIsCredit: isCredit,
+            accountFromIsCredit: false,
             accountTo: rightAccountIDs,
             amountTo: rightAccountAmts,
             message: msg,
@@ -217,17 +201,17 @@ const NewTransaction = ({ userID }) => {
     <>
       <Grid className="transactions" container spacing={2}>
         <Grid className="left" item xs={6}>
-          FROM
+          Dr.
           {displayAccounts("left")}
         </Grid>
         <Grid className="right" item xs={6}>
-          TO
+          Cr.
           {displayAccounts("right")}
         </Grid>
-        <Grid item xs={2} id="checkbox">
+        {/* <Grid item xs={2} id="checkbox">
           <Checkbox onChange={() => setIsCredit((prev) => !prev)} />{" "}
           <span>Credit</span>
-        </Grid>
+        </Grid> */}
         <Grid item xs={4}>
           <input
             className="defaultInput"

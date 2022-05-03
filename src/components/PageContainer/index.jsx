@@ -8,7 +8,10 @@ const LoggedOutWrapper = ({ children }) => {
       <h2 id="heading">
         <i>Welcome to Blockchain Based Accounting Platform</i>
       </h2>
-      <p id="subHeading">Secure |&nbsp; Fast |&nbsp; Reliable</p>
+      <p id="subHeading">
+        Department of Accountancy and Business Statistics <br /> Mohanlal
+        Sukhadia University, Udaipur
+      </p>
       <img
         alt="bgimg"
         id="bgimg"

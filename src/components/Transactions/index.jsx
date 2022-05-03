@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Select from "react-dropdown-select";
 import Transactions from "./NewTransaction";
@@ -9,6 +9,7 @@ import ViewTransactions from "./ViewTransactions";
 import "./index.scss";
 
 const Accounting = ({ users, userID }) => {
+  const [allAccountsDB, setAllAccountsDB] = useState([]);
   const viewOptions = [
     {
       label: "Enter New Transaction",
@@ -31,6 +32,26 @@ const Accounting = ({ users, userID }) => {
       component: Ledger,
     },
   ];
+
+  useEffect(() => {
+    const getAccountsData = async () => {
+      const data = await fetch(
+        "https://mlsubba.herokuapp.com/api/account/all"
+      ).catch((err) => {
+        console.log("err", err);
+      });
+      const res = await data.json();
+      const accOptions = res.map((acc) => ({
+        ...acc,
+        label: acc.name,
+        value: acc.name,
+        id: acc.id,
+      }));
+      setAllAccountsDB(accOptions);
+    };
+    getAccountsData();
+  }, []);
+
   const [selectedView, setSelectedView] = useState(viewOptions[0]);
   const ComponentToRender = selectedView.component;
 
@@ -46,7 +67,11 @@ const Accounting = ({ users, userID }) => {
           }}
         />
       </div>
-      <ComponentToRender users={users} userID={userID} />
+      <ComponentToRender
+        users={users}
+        userID={userID}
+        allAccountsDB={allAccountsDB}
+      />
     </div>
   );
 };
