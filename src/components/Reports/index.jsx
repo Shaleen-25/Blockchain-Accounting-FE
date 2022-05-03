@@ -57,6 +57,19 @@ const Reports = () => {
           </a>
         </Button>
         <br />
+        <Button fullWidth variant="outlined" className="submit">
+          <a
+            href="https://mlsubba.herokuapp.com/api/report/download/inventory.xlsx"
+            style={{
+              width: "100%",
+              color: "white",
+              textDecoration: "none",
+            }}
+          >
+            Inventory Report
+          </a>
+        </Button>
+        <br />
       </div>
     </>
   );
