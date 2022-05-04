@@ -24,6 +24,7 @@ const Info = ({
     <div
       style={{
         display: "flex",
+        marginTop: "-15px",
         marginBottom: "20px",
       }}
     >
@@ -201,11 +202,11 @@ const NewTransaction = ({ userID, allAccountsDB }) => {
     <>
       <Grid className="transactions" container spacing={2}>
         <Grid className="left" item xs={6}>
-          Dr.
+          <h3>Dr.</h3>
           {displayAccounts("left")}
         </Grid>
         <Grid className="right" item xs={6}>
-          Cr.
+          <h3>Cr.</h3>
           {displayAccounts("right")}
         </Grid>
         {/* <Grid item xs={2} id="checkbox">

@@ -63,66 +63,6 @@ const LandingPage = () => {
     <>
       {nodes}
       {arrows}
-      {/* <Xarrow
-        dashness={true}
-        curveness={0}
-        strokeWidth="4"
-        color="white"
-        showTail={true}
-        showHead={true}
-        start={box1Ref}
-        end={box2Ref}
-      />
-      <Xarrow
-        dashness={true}
-        showHead={true}
-        curveness={0}
-        strokeWidth="4"
-        color="white"
-        showTail={true}
-        start={box1Ref}
-        end={box3Ref}
-      />
-      <Xarrow
-        dashness={true}
-        showHead={true}
-        curveness={0}
-        strokeWidth="4"
-        color="white"
-        showTail={true}
-        start={box1Ref}
-        end={box4Ref}
-      />
-      <Xarrow
-        dashness={true}
-        showHead={true}
-        curveness={0}
-        strokeWidth="4"
-        showTail={true}
-        color="white"
-        start={box2Ref}
-        end={box3Ref}
-      />
-      <Xarrow
-        dashness={true}
-        showHead={true}
-        curveness={0}
-        strokeWidth="4"
-        color="white"
-        showTail={true}
-        start={box2Ref}
-        end={box4Ref}
-      />
-      <Xarrow
-        dashness={true}
-        showHead={true}
-        curveness={0}
-        strokeWidth="4"
-        color="white"
-        showTail={true}
-        start={box3Ref}
-        end={box4Ref}
-      /> */}
     </>
   );
 };
