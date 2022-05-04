@@ -18,7 +18,7 @@ const Info = ({
   allAccountsDB,
 }) => {
   const last = index === accs.length - 1;
-  const qtyDisplay = ["Purchase", "Sale"];
+  const qtyDisplay = ["Purchase", "Purchase Return", "Sale", "Sale Return"];
 
   return (
     <div
