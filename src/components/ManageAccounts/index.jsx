@@ -1,10 +1,10 @@
 import { Button } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import Select from "react-dropdown-select";
 import { toast } from "react-toastify";
 import { toastSettings } from "../../constants";
 import "./index.scss";
+import Select from "react-select";
 
 const typeOptions = [
   { label: "Fixed Asset", id: "Fixed Asset" },
@@ -45,35 +45,74 @@ const typeOptions = [
   { label: "Capital", id: "Capital" },
 ];
 
-const ManageAccounts = ({ users }) => {
+const ManageAccounts = ({ users, allAccountsDB }) => {
+  let allAccs = allAccountsDB;
   const [accName, setAccName] = useState("");
   const [type, setType] = useState("");
   const [appr1, setAppr1] = useState("");
   const [appr2, setAppr2] = useState("");
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const userOptions = users.map((user) => ({
     label: user.firstName,
     id: user.id,
   }));
 
+  const handleDelete = async () => {
+    if (isUpdate) {
+      setAccName("");
+      setIsUpdate(false);
+      try {
+        // const res =
+        await fetch("https://mlsubba.herokuapp.com/api/account/delete", {
+          method: "POST",
+          body: JSON.stringify({
+            name: accName,
+            type,
+            approver1: appr1,
+            approver2: appr2,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        });
+        // const data = await res.json();
+        // if (data?.status === 500)
+        //   toast.error("Failed to delete Account. Try again");
+        // else
+        toast.success("Successfully Deleted Account", toastSettings);
+      } catch (err) {
+        console.log("error", err);
+        toast.error(err.message, toastSettings);
+      }
+    }
+  };
+
   const handleSubmit = async () => {
     try {
-      const res = await fetch("https://mlsubba.herokuapp.com/api/account/add", {
-        method: "POST",
-        body: JSON.stringify({
-          name: accName,
-          type,
-          approver1: appr1,
-          approver2: appr2,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-      const data = await res.json();
-      if (data?.status === 500)
-        toast.error("Failed to add New Account. Try again");
-      else toast.success("Successfully Added New Account", toastSettings);
+      // const res =
+      await fetch(
+        `https://mlsubba.herokuapp.com/api/account/${
+          isUpdate ? "modify" : "add"
+        }`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name: accName,
+            type,
+            approver1: appr1,
+            approver2: appr2,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      // const data = await res.json();
+      // if (data?.status === 500)
+      //   toast.error("Failed to add/update Account. Try again");
+      // else
+      toast.success("Successfully Added/Updated Account", toastSettings);
     } catch (err) {
       console.log("error", err);
       toast.error(err.message, toastSettings);
@@ -82,7 +121,26 @@ const ManageAccounts = ({ users }) => {
 
   return (
     <div className="addAccount">
-      <h3>Add new Account</h3>
+      <h3>Manage Accounts</h3>
+      <div className="dropdown">
+        <h4 style={{ textAlign: "left", lineHeight: 0 }}>
+          Update Existing Account
+        </h4>
+        <Select
+          options={[{ id: "Create New", label: "Create New" }, ...allAccs]}
+          onChange={(value) => {
+            if (value.id == "Create New") {
+              setIsUpdate(false);
+            } else {
+              setIsUpdate(true);
+              setAccName(value.name);
+              setType(value.type);
+              setAppr1(value.approver1);
+              setAppr2(value.approver2);
+            }
+          }}
+        />
+      </div>
       <div className="dropdown">
         <h4 style={{ textAlign: "left", lineHeight: 0 }}>Account Name</h4>
         <input
@@ -92,53 +150,66 @@ const ManageAccounts = ({ users }) => {
           value={accName}
           onChange={(e) => setAccName(e.target.value)}
         />
-        <br />
       </div>
       <div className="dropdown">
         <h4 style={{ textAlign: "left", lineHeight: 0 }}>
           Choose Account Group
         </h4>
         <Select
-          values={[
-            { label: "Select Account Group", value: "Select Account Type" },
-          ]}
+          value={typeOptions.find(({ id }) => id === type)}
           options={typeOptions}
-          onChange={(values) => {
-            setType(values[0]?.id || "");
+          onChange={(value) => {
+            console.log(
+              "🚀 ~ file: index.jsx ~ line 136 ~ ManageAccounts ~ values",
+              value
+            );
+            setType(value.id || "");
           }}
         />
-        <br />
       </div>
       <div className="dropdown">
         <h4 style={{ textAlign: "left", lineHeight: 0 }}>
           Choose Approver One
         </h4>
         <Select
-          values={[{ label: "Select Approver", value: "test" }]}
+          value={userOptions.find(({ id }) => id === appr1)}
           options={userOptions}
-          onChange={(values) => {
-            setAppr1(values[0]?.id || "");
+          onChange={(value) => {
+            setAppr1(value.id || "");
           }}
         />
-        <br />
       </div>
       <div className="dropdown">
         <h4 style={{ textAlign: "left", lineHeight: 0 }}>
           Choose Approver Two
         </h4>
         <Select
-          values={[{ label: "Select Approver", value: "test" }]}
+          value={userOptions.find(({ id }) => id === appr2)}
           options={userOptions}
-          onChange={(values) => {
-            setAppr2(values[0]?.id || "");
+          onChange={(value) => {
+            setAppr2(value.id || "");
           }}
         />
-        <br />
-        <br />
       </div>
-      <Button variant="outlined" className="submit" onClick={handleSubmit}>
-        Create New Account
+      <br />
+      <Button
+        style={{ width: "350px", marginBottom: "10px" }}
+        variant="outlined"
+        className="submit"
+        onClick={handleSubmit}
+      >
+        Create/Update Account
       </Button>
+      {isUpdate ? (
+        <Button
+          style={{ width: "350px" }}
+          variant="outlined"
+          color="error"
+          onClick={handleDelete}
+        >
+          Delete Account
+        </Button>
+      ) : null}
     </div>
   );
 };
