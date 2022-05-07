@@ -22,8 +22,8 @@ const Accounting = ({ users, userID }) => {
       component: ViewTransactions,
     },
     {
-      label: "Create New Account",
-      value: "Create New Account",
+      label: "Manage Accounts",
+      value: "Manage Accounts",
       component: ManageAccounts,
     },
     {
