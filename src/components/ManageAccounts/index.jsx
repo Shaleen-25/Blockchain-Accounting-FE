@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { toastSettings } from "../../constants";
-import "./index.scss";
+import styles from "./index.module.scss";
 import Select from "react-select";
 
 const typeOptions = [
@@ -120,7 +120,7 @@ const ManageAccounts = ({ users, allAccountsDB }) => {
   };
 
   return (
-    <div className="addAccount">
+    <div className={styles.addAccount}>
       <h3>Manage Accounts</h3>
       <div className="dropdown">
         <h4 style={{ textAlign: "left", lineHeight: 0 }}>
