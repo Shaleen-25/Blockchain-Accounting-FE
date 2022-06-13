@@ -18,10 +18,6 @@ const LoggedOutWrapper = ({ children }) => {
         src="https://react-next-landing.redq.io/_next/static/images/banner-bg-7cd39473df03c970027bf99aed3e7a3b.png"
       />
       {children}
-      <h2 id="footer">
-        Made with 💙 from DeFi Rangers
-        <p>© 2022 | All Rights Reserved.</p>
-      </h2>
       <ToastContainer />
     </div>
   );
