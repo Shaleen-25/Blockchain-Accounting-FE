@@ -5,10 +5,11 @@ import "./index.scss";
 const LoggedOutWrapper = ({ children }) => {
   return (
     <div className="landing">
-      <h2 id="heading">
-        <i>Welcome to Blockchain Based Accounting Platform</i>
+      <h2 id6="heading">
+        <i>SUBAS</i>
       </h2>
       <p id="subHeading">
+        Welcome to Sukhadia University Blockchain Accounting Software <br />
         Department of Accountancy and Business Statistics <br /> Mohanlal
         Sukhadia University, Udaipur
       </p>
