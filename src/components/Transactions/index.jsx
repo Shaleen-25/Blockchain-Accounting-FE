@@ -36,7 +36,7 @@ const Accounting = ({ users, userID }) => {
   useEffect(() => {
     const getAccountsData = async () => {
       const data = await fetch(
-        "https://mlsubba.herokuapp.com/api/account/all"
+        "https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/account/all"
       ).catch((err) => {
         console.log("err", err);
       });

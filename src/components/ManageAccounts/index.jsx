@@ -7,42 +7,71 @@ import styles from "./index.module.scss";
 import Select from "react-select";
 
 const typeOptions = [
-  { label: "Fixed Asset", id: "Fixed Asset" },
-  { label: "Current Asset-Sundry Debtors", id: "Current Asset-Sundry Debtors" },
+  { label: "Fixed Asset", id: "Fixed Asset", value: "Fixed Asset" },
+  {
+    label: "Current Asset-Sundry Debtors",
+    id: "Current Asset-Sundry Debtors",
+    value: "Current Asset-Sundry Debtors",
+  },
   {
     label: "Current Asset-Bills Receivable",
     id: "Current Asset-Bills Receivable",
+    value: "Current Asset-Bills Receivable",
   },
-  { label: "Current Asset-Stock in Hand", id: "Current Asset-Stock in Hand" },
-  { label: "Current Asset-Cash in Hand", id: "Current Asset-Cash in Hand" },
-  { label: "Current Asset-Cash at Bank", id: "Current Asset-Cash at Bank" },
+  {
+    label: "Current Asset-Stock in Hand",
+    id: "Current Asset-Stock in Hand",
+    value: "Current Asset-Stock in Hand",
+  },
+  {
+    label: "Current Asset-Cash in Hand",
+    id: "Current Asset-Cash in Hand",
+    value: "Current Asset-Cash in Hand",
+  },
+  {
+    label: "Current Asset-Cash at Bank",
+    id: "Current Asset-Cash at Bank",
+    value: "Current Asset-Cash at Bank",
+  },
   {
     label: "Current Asset-Other Current Asset",
     id: "Current Asset-Other Current Asset",
+    value: "Current Asset-Other Current Asset",
   },
-  { label: "Fixed Liability", id: "Fixed Liability" },
+  { label: "Fixed Liability", id: "Fixed Liability", value: "Fixed Liability" },
   {
     label: "Current Liability-Sundry Creditors",
     id: "Current Liability-Sundry Creditors",
+    value: "Current Liability-Sundry Creditors",
   },
   {
     label: "Current Liability-Bills Payable",
     id: "Current Liability-Bills Payable",
+    value: "Current Liability-Bills Payable",
   },
-  { label: "Current Liability-Provisions", id: "Current Liability-Provisions" },
+  {
+    label: "Current Liability-Provisions",
+    id: "Current Liability-Provisions",
+    value: "Current Liability-Provisions",
+  },
   {
     label: "Current Liability-Other Current Liability",
     id: "Current Liability-Other Current Liability",
+    value: "Current Liability-Other Current Liability",
   },
-  { label: "Direct Income", id: "Direct Income" },
-  { label: "Indirect Income", id: "Indirect Income" },
-  { label: "Direct Expense", id: "Direct Expense" },
-  { label: "Indirect Expense", id: "Indirect Expense" },
-  { label: "Purchase", id: "Purchase" },
-  { label: "Sales", id: "Sales" },
-  { label: "Loan", id: "Loan" },
-  { label: "Investment", id: "Investment" },
-  { label: "Capital", id: "Capital" },
+  { label: "Direct Income", id: "Direct Income", value: "Direct Income" },
+  { label: "Indirect Income", id: "Indirect Income", value: "Indirect Income" },
+  { label: "Direct Expense", id: "Direct Expense", value: "Direct Expense" },
+  {
+    label: "Indirect Expense",
+    id: "Indirect Expense",
+    value: "Indirect Expense",
+  },
+  { label: "Purchase", id: "Purchase", value: "Purchase" },
+  { label: "Sales", id: "Sales", value: "Sales" },
+  { label: "Loan", id: "Loan", value: "Loan" },
+  { label: "Investment", id: "Investment", value: "Investment" },
+  { label: "Capital", id: "Capital", value: "Capital" },
 ];
 
 const ManageAccounts = ({ users, allAccountsDB }) => {
@@ -64,7 +93,7 @@ const ManageAccounts = ({ users, allAccountsDB }) => {
       setIsUpdate(false);
       try {
         // const res =
-        await fetch("https://mlsubba.herokuapp.com/api/account/delete", {
+        await fetch("https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/account/delete", {
           method: "POST",
           body: JSON.stringify({
             name: accName,
@@ -92,7 +121,7 @@ const ManageAccounts = ({ users, allAccountsDB }) => {
     try {
       // const res =
       await fetch(
-        `https://mlsubba.herokuapp.com/api/account/${
+        `https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/account/${
           isUpdate ? "modify" : "add"
         }`,
         {

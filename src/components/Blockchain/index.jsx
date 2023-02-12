@@ -58,7 +58,7 @@ const Blockchain = () => {
   useEffect(() => {
     (async () => {
       const res = await fetch(
-        `https://mlsubba.herokuapp.com/api/blockchain/all`
+        `https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/blockchain/all`
       );
       const data = await res.json();
 

@@ -27,8 +27,8 @@ const ViewTransactions = ({ transactionNum, showAll = true }) => {
     (async () => {
       const res = await fetch(
         showAll
-          ? `https://mlsubba.herokuapp.com/api/transaction/all`
-          : `https://mlsubba.herokuapp.com/api/transaction/find?transactionNum=${transactionNum}`
+          ? `https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/transaction/all`
+          : `https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/transaction/find?transactionNum=${transactionNum}`
       );
 
       let data = await res.json();

@@ -31,7 +31,7 @@ const Logs = ({ users }) => {
   useEffect(() => {
     (async () => {
       const res = await fetch(
-        `https://mlsubba.herokuapp.com/api/logs/findUser?user=${userID}`
+        `https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/logs/findUser?user=${userID}`
       );
       const data = await res.json();
 

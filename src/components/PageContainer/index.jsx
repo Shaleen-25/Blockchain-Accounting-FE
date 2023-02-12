@@ -5,7 +5,7 @@ import "./index.scss";
 const LoggedOutWrapper = ({ children }) => {
   return (
     <div className="landing">
-      <h2 id6="heading">
+      <h2 id="heading">
         <i>SUBAS</i>
       </h2>
       <p id="subHeading">

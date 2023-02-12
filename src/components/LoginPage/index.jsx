@@ -44,7 +44,7 @@ const LoginPage = () => {
       //post req to add user
       try {
         // const res =
-        await fetch("https://mlsubba.herokuapp.com/api/user/add", {
+        await fetch("https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/user/add", {
           method: "POST",
           body: JSON.stringify({
             firstName: user,
@@ -67,7 +67,7 @@ const LoginPage = () => {
     } else {
       // post req to check user
       const data = await fetch(
-        `https://mlsubba.herokuapp.com/api/user/login?name=${user}&password=${pwd}`
+        `https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/user/login?name=${user}&password=${pwd}`
       );
       const res = await data.text();
       if (res === "success") {

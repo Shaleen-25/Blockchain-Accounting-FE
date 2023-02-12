@@ -20,7 +20,7 @@ const Reports = () => {
         </h4>
         <Button fullWidth variant="outlined" className="submit">
           <a
-            href="https://mlsubba.herokuapp.com/api/report/download/tb.xlsx"
+            href="https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/report/download/tb.xlsx"
             style={{
               width: "100%",
               color: "white",
@@ -33,7 +33,7 @@ const Reports = () => {
         <br />
         <Button fullWidth variant="outlined" className="submit">
           <a
-            href="https://mlsubba.herokuapp.com/api/report/download/income.xlsx"
+            href="https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/report/download/income.xlsx"
             style={{
               width: "100%",
               color: "white",
@@ -46,7 +46,7 @@ const Reports = () => {
         <br />
         <Button fullWidth variant="outlined" className="submit">
           <a
-            href="https://mlsubba.herokuapp.com/api/report/download/bs.xlsx"
+            href="https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/report/download/bs.xlsx"
             style={{
               width: "100%",
               color: "white",
@@ -59,7 +59,7 @@ const Reports = () => {
         <br />
         <Button fullWidth variant="outlined" className="submit">
           <a
-            href="https://mlsubba.herokuapp.com/api/report/download/inventory.xlsx"
+            href="https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/report/download/inventory.xlsx"
             style={{
               width: "100%",
               color: "white",

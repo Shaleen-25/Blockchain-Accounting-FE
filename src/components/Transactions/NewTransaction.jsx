@@ -172,7 +172,7 @@ const NewTransaction = ({ userID, allAccountsDB }) => {
       toast.error("Transaction message should not be empty", toastSettings);
     } else {
       try {
-        await fetch("https://mlsubba.herokuapp.com/api/transaction/add", {
+        await fetch("https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/transaction/add", {
           method: "POST",
           body: JSON.stringify({
             quantityFrom: leftAccountQtys,

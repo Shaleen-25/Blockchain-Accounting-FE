@@ -103,7 +103,7 @@ const Dasboard = () => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
     (async () => {
-      const res = await fetch("https://mlsubba.herokuapp.com/api/user/all");
+      const res = await fetch("https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/user/all");
       const users = await res.json();
       setUsers(users);
     })();

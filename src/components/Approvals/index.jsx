@@ -47,7 +47,7 @@ export default function Approvals({ users }) {
 
   const getApprovalsData = async () => {
     const data = await fetch(
-      `https://mlsubba.herokuapp.com/api/consensus/findByApprover?approver=${userId}`
+      `https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/consensus/findByApprover?approver=${userId}`
     ).catch((err) => {
       console.log("err", err);
     });
@@ -71,7 +71,7 @@ export default function Approvals({ users }) {
 
   const acceptHandler = async (params) => {
     try {
-      await fetch("https://mlsubba.herokuapp.com/api/consensus/setApproval", {
+      await fetch("https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/consensus/setApproval", {
         method: "POST",
         body: JSON.stringify({
           transactionNum: params.row.transactionNum,
@@ -91,7 +91,7 @@ export default function Approvals({ users }) {
 
   const rejectHandler = async () => {
     try {
-      await fetch("https://mlsubba.herokuapp.com/api/consensus/setApproval", {
+      await fetch("https://bbanode2.ap-northeast-1.elasticbeanstalk.com/api/consensus/setApproval", {
         method: "POST",
         body: JSON.stringify({
           transactionNum: selectedTrancNum,
